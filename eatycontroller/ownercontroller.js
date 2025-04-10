@@ -6,13 +6,14 @@ const User=require('../model/User')
 
 const fetchOrder = async (req, res) => {
     try {
-
         const ownerId = req.user.userId;
         if (!ownerId) {
             return res.status(401).json({ success: false, message: "Unauthorized: Owner ID not found" });
         }
 
-        const orders = await Order.find( {ownerId} ).populate("items.productId", "name price");
+        const orders = await Order.find({ ownerId })
+            .populate("items.productId", "name price") // name and price of product
+            .populate("userId", "username"); // populate user's name
 
         if (!orders.length) {
             return res.status(404).json({ success: false, message: "No orders found for this shop" });
@@ -24,6 +25,7 @@ const fetchOrder = async (req, res) => {
         return res.status(500).json({ success: false, message: "Server error" });
     }
 };
+
 const delevered_order= async(req,res)=>{
     try {
         const orderId=req.params.id;
