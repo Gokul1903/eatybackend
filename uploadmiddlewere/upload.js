@@ -1,22 +1,24 @@
-const multer =require("multer");
-const path = require("path");
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const multer = require('multer');
 
-const storage=multer.diskStorage({
-    destination:"./uploads/",
-    filename:(req,file,cb)=>{
-        cb(null,file.fieldname+"_"+ Date.now()+path.extname(file.originalname));
-    }
+// Cloudinary config
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-const fileFilter=(req,file,cb)=>{
-    if(file.mimetype.startsWith("image/")){
-        cb(null,true)
+// Storage setup
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'eaty-images', // Optional: Folder name in your Cloudinary dashboard
+    allowed_formats: ['jpg', 'png', 'jpeg','webp'],
+    public_id: (req, file) => Date.now() + '-' + file.originalname,
+  },
+});
 
-    }else[
-        cb(new Error("Only image is allowed"),false)
-    ]
-}
-const upload=multer({
-    storage:storage, fileFilter:fileFilter
-})
-module.exports= upload;
+const upload = multer({ storage });
+
+module.exports = upload;
