@@ -25,6 +25,21 @@ const fetchOrder = async (req, res) => {
         return res.status(500).json({ success: false, message: "Server error" });
     }
 };
+const viewsingleorder=async(req,res)=>{
+    try {
+        const orderid=req.params.id;
+        const order=await Order.findById(orderid);
+
+        if(!order){
+            return res.status(400).json({success:false,message:"Order not found"})
+
+        }
+        return res.status(200).json({success:true,order})
+
+    } catch (error) {
+        return res.status(500).json({ success: false, message: "Server error" });
+    }
+}
 
 const delevered_order= async(req,res)=>{
     try {
@@ -58,4 +73,4 @@ const cancelled_order=async (req,res)=>{
 }
 
 
-module.exports={fetchOrder,delevered_order,cancelled_order}
+module.exports={fetchOrder,delevered_order,cancelled_order,viewsingleorder}
