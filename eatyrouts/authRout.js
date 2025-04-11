@@ -13,5 +13,4 @@ router.post('/reset',reset_password);
 router.post('/Owner_signup',Owner_Signup);
 router.post('/Owner_signin',Owner_signin);
 
-
 module.exports=router;
