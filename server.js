@@ -1,51 +1,19 @@
 require('dotenv').config();
 const path = require("path");
-const express = require('express');
-const cors = require('cors');
-const mongoose = require('mongoose');
-const cookieParser = require('cookie-parser');
-const { createServer } = require("http");       // ✅ New
-const { Server } = require("socket.io");        // ✅ New
+const express=require('express')
+const cors = require('cors')
+const mongoos=require('mongoose')
+const authRouter=require('./eatyrouts/authRout')
+const cookieParser = require('cookie-parser')
+const shoprout=require('./eatyrouts/shoprout')
+const userrout=require('./eatyrouts/useroperation')
 
-// ROUTERS
-const authRouter = require('./eatyrouts/authRout');
-const shoprout = require('./eatyrouts/shoprout');
-const userrout = require('./eatyrouts/useroperation');
-
-const app = express();
-const server = createServer(app);               // ✅ New HTTP Server
-const io = new Server(server, {
-  cors: {
-    origin: [
-      "http://localhost:5173",
-      "https://eatyapp.netlify.app"
-    ],
-    credentials: true
-  }
-});
-
-// ✅ WebSocket logic
-io.on("connection", (socket) => {
-  console.log("New user connected:", socket.id);
-
-  // Custom event when order is placed
-  socket.on("newOrder", (orderData) => {
-    console.log("Order Received:", orderData);
-    io.emit("orderUpdate", orderData);  // send to all clients
-  });
-
-  socket.on("disconnect", () => {
-    console.log("User disconnected:", socket.id);
-  });
-});
-
-// Middleware
+const app=express()
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-app.use(express.json());
-
+app.use(express.json())
 const allowedOrigins = [
-  "http://localhost:5173",
-  "https://eatyapp.netlify.app"
+    "http://localhost:5173",
+    "https://eatyapp.netlify.app"
 ];
 
 app.use(cors({
@@ -59,24 +27,22 @@ app.use(cors({
   credentials: true
 }));
 
-app.use(cookieParser());
 
-// Routes
-app.use('/auth', authRouter);
-app.use('/owner', shoprout);
-app.use('/user', userrout);
+app.use(cookieParser());    
 
-// Connect to MongoDB and start server
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log("Connected to database");
+app.use('/auth',authRouter)
+app.use('/owner',shoprout)
+app.use('/user',userrout)
 
-    // ✅ Start Socket.io compatible server
-    const PORT = process.env.PORT || 5000;
-    server.listen(PORT, () => {
-      console.log(`Listening on port ${PORT}`);
-    });
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+mongoos.connect(process.env.MONGO_URI)
+    .then(()=>{
+        console.log("Connected to database")
+        app.listen(process.env.PORT || 5000,()=>{
+            console.log(`Listing to ${process.env.PORT}` )
+        })
+    }
+    )
+    .catch((err)=>{
+        console.log(err)
+    })
+
