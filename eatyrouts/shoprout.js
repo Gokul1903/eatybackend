@@ -8,7 +8,7 @@ const {fetchOrder,updateOrderStatus,cancelled_order,viewsingleorder}=require('..
 router.post("/add_product",AuthmiddlewareoWNER,upload.single("image"), addProduct);
 router.put("/update_product",AuthmiddlewareoWNER,upload.single("image"),update_product)
 router.delete("/delete_product",AuthmiddlewareoWNER,delete_product)
-router.get('/order',AuthmiddlewareoWNER,fetchOrder)
+router.get('/order',fetchOrder)
 router.put('/status/:id',AuthmiddlewareoWNER,updateOrderStatus)
 router.delete('/cancelled/:id',AuthmiddlewareoWNER,cancelled_order)
 router.get('/singleorder/:id',AuthmiddlewareoWNER,viewsingleorder)
