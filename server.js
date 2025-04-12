@@ -13,7 +13,8 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(express.json())
 const allowedOrigins = [
     "http://localhost:5173",
-    "https://eatyapp.netlify.app"
+    "https://eatyapp.netlify.app",
+    "https://eatyowner.netlify.app"
 ];
 
 app.use(cors({
