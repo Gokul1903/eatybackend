@@ -5,7 +5,8 @@ const path = require("path");
 
 const addProduct=async (req,res)=>{
     try {
-        const {name,price,ShopId} =req.body;
+        const ShopId = req.user.userId;
+        const {name,price} =req.body;
         const image=req.file ? `/uploads/${req.file.filename}`:null;
         
     
@@ -29,7 +30,8 @@ const addProduct=async (req,res)=>{
 
 const update_product = async (req, res) => {
     try {
-        const { productId, name, price, ShopId } = req.body;
+        const ShopId = req.user.userId;
+        const { productId, name, price } = req.body;
         const image = req.file ? `/uploads/${req.file.filename}` : null;
 
         
