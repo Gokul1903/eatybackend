@@ -28,7 +28,9 @@ const fetchOrder = async (req, res) => {
 const viewsingleorder=async(req,res)=>{
     try {
         const orderid=req.params.id;
-        const order=await Order.findById(orderid);
+        const order=await Order.findById(orderid)
+            .populate("items.productId", "name price") 
+            .populate("userId", "name");;
 
         if(!order){
             return res.status(400).json({success:false,message:"Order not found"})
