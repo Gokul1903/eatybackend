@@ -43,15 +43,23 @@ const viewsingleorder=async(req,res)=>{
     }
 }
 
-const delevered_order= async(req,res)=>{
+const updateOrderStatus= async(req,res)=>{
     try {
         const orderId=req.params.id;
         const order=await Order.findById(orderId)
         if(!order){
             return res.status(400).json({success:false,message:"order not found"})
         }
-        await Order.findByIdAndDelete(orderId)
-        return res.status(200).json({success:true,message:"Product delivered"})
+        if (order.status === "pending") {
+            order.status = "foodready";
+          } else if (order.status === "foodready") {
+            order.status = "delivered";
+          } else {
+            return res.status(400).json({ success: false, message: "Order already delivered or cancelled" });
+          }
+      
+          await order.save();
+        return res.status(200).json({success:true,message:"status updated",status: order.status})
     } catch (error) {
         return res.status(500).json({ success: false, message: "Server error" });
     }
@@ -75,4 +83,4 @@ const cancelled_order=async (req,res)=>{
 }
 
 
-module.exports={fetchOrder,delevered_order,cancelled_order,viewsingleorder}
+module.exports={fetchOrder,updateOrderStatus,cancelled_order,viewsingleorder}
