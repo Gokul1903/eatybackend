@@ -81,6 +81,15 @@ const cancelled_order=async (req,res)=>{
         return res.status(500).json({ success: false, message: "Server error" });
     }
 }
+const viewproduct=async(req,res)=>{
+    try {
+        const ownerId = req.user.userId;
+        const products = await Product.find({ownerId});
+        console.log(products)
+        return res.status(200).json({ success: true, products });
+    } catch (error) {
+        return res.status(500).json({success: false,message:"Server error"})
+    }
+}
 
-
-module.exports={fetchOrder,updateOrderStatus,cancelled_order,viewsingleorder}
+module.exports={fetchOrder,updateOrderStatus,cancelled_order,viewsingleorder,viewproduct}
