@@ -84,7 +84,7 @@ const cancelled_order=async (req,res)=>{
 const viewproduct=async(req,res)=>{
     try {
         const ownerId = req.user.userId;
-        const products = await Product.find({ownerId});
+        const products = await Product.find({ShopId: ownerId});
         console.log(products)
         return res.status(200).json({ success: true, products });
     } catch (error) {
