@@ -95,10 +95,14 @@ const delete_product = async (req, res) => {
                 fs.unlinkSync(imagePath); // Delete the file
             }
         }
+        
 
         // Delete pandrom batabase la
         await Product.findByIdAndDelete(productId);
-
+        await Order.updateMany(
+                    { "items.productId": productId },
+                    { $pull: { items: { productId } } }
+                );
         return res.status(200).json({success: true, message: "Product Deleted Successfully" });
     } catch (error) {
         return res.status(500).json({success: false, message: error.message });
