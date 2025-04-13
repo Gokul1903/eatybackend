@@ -91,5 +91,20 @@ const viewproduct=async(req,res)=>{
         return res.status(500).json({success: false,message:"Server error"})
     }
 }
+const viewsingleproduct=async(req,res)=>{
+    try {
+        const productid=req.params.id;
+        const product=await Product.findById(productid);
 
-module.exports={fetchOrder,updateOrderStatus,cancelled_order,viewsingleorder,viewproduct}
+        if(!product){
+            return res.status(400).json({success:false,message:"product not found"})
+
+        }
+        return res.status(200).json({success:true,product})
+
+    } catch (error) {
+        return res.status(500).json({ success: false, message: "Server error" });
+    }
+}
+
+module.exports={fetchOrder,updateOrderStatus,cancelled_order,viewsingleorder,viewproduct,viewsingleproduct}
