@@ -71,6 +71,27 @@ const viewsingleproduct=async(req,res)=>{
         return res.status(500).json({ success: false, message: "Server error" });
     }
 }
+const Orderhistory = async (req, res) => {
+    try {
+        const userId = req.user.userId;
+        if (!userId) {
+            return res.status(401).json({ success: false, message: "Unauthorized: User ID not found" });
+        }
+
+        const orders = await Order.find({ userId })
+            .populate("items.productId", "name price") // name and price of product
+            .populate("userId", "name"); // populate user's name
+
+        if (!orders.length) {
+            return res.status(404).json({ success: false, message: "No orders found for this shop" });
+        }
+
+        return res.status(200).json({ success: true, orders });
+    } catch (error) {
+        console.error("Error fetching orders:", error);
+        return res.status(500).json({ success: false, message: "Server error" });
+    }
+};
 
 const getProfile= async (req,res)=>{
     try {
@@ -85,4 +106,4 @@ const getProfile= async (req,res)=>{
     }
 }
 
-module.exports={placeOrder,viewproduct,viewsingleproduct,getProfile}
+module.exports={placeOrder,viewproduct,viewsingleproduct,getProfile,Orderhistory}
