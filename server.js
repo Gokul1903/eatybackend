@@ -7,6 +7,7 @@ const authRouter=require('./eatyrouts/authRout')
 const cookieParser = require('cookie-parser')
 const shoprout=require('./eatyrouts/shoprout')
 const userrout=require('./eatyrouts/useroperation')
+const admin=require('./eatyrouts/adminrout')
 
 const app=express()
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
@@ -34,6 +35,8 @@ app.use(cookieParser());
 app.use('/auth',authRouter)
 app.use('/owner',shoprout)
 app.use('/user',userrout)
+app.use('/admin',admin)
+
 
 mongoos.connect(process.env.MONGO_URI)
     .then(()=>{
