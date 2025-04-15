@@ -37,6 +37,7 @@ const placeOrder = async (req, res) => {
             ownerId,
             items: updatedItems,
             totalAmount,
+            availability,
             Address
         });
 
