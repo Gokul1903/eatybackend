@@ -19,7 +19,8 @@ const OrderSchema = new Schema({
     },
     availability:{
         type:Number,
-        required:true
+        required:true,
+        min:0
     },
     items: [{
         productId: { 

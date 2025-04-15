@@ -44,11 +44,22 @@ const placeOrder = async (req, res) => {
         await newOrder.save();
 
 
-            for (const item of updatedItems) {
+        for (const item of updatedItems) {
+            const product = await Product.findById(item.productId);
+            if (!product) {
+                throw new Error(`Product not found: ${item.productId}`);
+            }
+        
+            // Ensure availability doesn't go below 0
+            if (product.availability < item.quantity) {
+                throw new Error(`Insufficient availability for product: ${item.productId}`);
+            }
+        
+            // Decrease availability safely
             await Product.findByIdAndUpdate(item.productId, {
                 $inc: { availability: -item.quantity }
             });
-            }
+        }
 
 
         return res.status(201).json({success: true, message: "Order placed successfully", order: newOrder });
