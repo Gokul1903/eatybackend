@@ -7,8 +7,8 @@ const User=require('../model/User')
 const placeOrder = async (req, res) => {
     try {
         const userId=req.user.userId;
-        const { ownerId, items,Address } = req.body;
-        if ( !ownerId || !items || items.length === 0 || !Address) {
+        const { ownerId, items,Address,availability } = req.body;
+        if ( !ownerId || !items || items.length === 0 || !Address || !availability) {
             console.log(ownerId,items,Address)
             return res.status(400).json({ message: "User ID and items are required" });
         }
@@ -41,6 +41,14 @@ const placeOrder = async (req, res) => {
         });
 
         await newOrder.save();
+
+
+            for (const item of updatedItems) {
+            await Product.findByIdAndUpdate(item.productId, {
+                $inc: { availability: -item.quantity }
+            });
+            }
+
 
         return res.status(201).json({success: true, message: "Order placed successfully", order: newOrder });
     } catch (error) {

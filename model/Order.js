@@ -17,6 +17,10 @@ const OrderSchema = new Schema({
         type:String,
         required:true
     },
+    availability:{
+        type:Number,
+        required:true
+    },
     items: [{
         productId: { 
             type: mongoose.Schema.Types.ObjectId, 
