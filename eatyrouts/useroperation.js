@@ -8,5 +8,5 @@ router.get("/viewproduct",viewproduct)
 router.get("/viewsingleproduct/:id",viewsingleproduct)
 router.get("/getProfile",Authmiddleware,getProfile)
 router.get("/getHistory",Authmiddleware,Orderhistory)
-router.get("/cancelorder",Authmiddleware,cancelled_order)
+router.delete("/cancelorder",Authmiddleware,cancelled_order)
 module.exports=router
