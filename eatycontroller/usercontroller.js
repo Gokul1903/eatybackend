@@ -102,9 +102,10 @@ const Orderhistory = async (req, res) => {
             .populate("items.productId", "name price") // name and price of product
             .populate("userId", "name"); // populate user's name
 
-        if (!orders.length) {
-            return res.status(404).json({ success: false, message: "No orders found for this shop" });
-        }
+            if (!orders.length) {
+                return res.status(200).json({ success: true, orders: [] });
+            }
+            
 
         return res.status(200).json({ success: true, orders });
     } catch (error) {
