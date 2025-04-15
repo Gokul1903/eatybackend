@@ -125,5 +125,19 @@ const getProfile= async (req,res)=>{
         return res.status(500).json({success:false,message:error.message})
     }
 }
+const cancelled_order=async (req,res)=>{
+    try {
+        
+        const {message,id}=req.body
+        const order=await Order.findById(id)
+        if(!order){
+            return res.status(400).json({success:false,message:"order not found"})
+        }
+        await Order.findByIdAndDelete(id)
+        return res.status(200).json({success:true,message:message||"Order cancelled"})
+    } catch (error) {
+        return res.status(500).json({ success: false, message: "Server error" });
+    }
+}
 
-module.exports={placeOrder,viewproduct,viewsingleproduct,getProfile,Orderhistory}
+module.exports={placeOrder,viewproduct,viewsingleproduct,getProfile,Orderhistory,cancelled_order}
