@@ -6,11 +6,11 @@ const path = require("path");
 const addProduct=async (req,res)=>{
     try {
         const ShopId = req.user.userId;
-        const {name,price} =req.body;
+        const {name,price,availability} =req.body;
         const image=req.file ? `/uploads/${req.file.filename}`:null;
         
     
-        if(!name || !price || !ShopId || !image){
+        if(!name || !price || !ShopId || !image || !availability){
             return res.status(400).json({success: false,message:"All properties required"})
         }
         const newproduct= new Product({
@@ -18,7 +18,7 @@ const addProduct=async (req,res)=>{
             price,
             ShopId,
             image,
-            availability:true
+            availability
         })
         await newproduct.save()
         return res.status(201).json({success: true, message: "Product added successfully", product: newproduct });
@@ -31,11 +31,11 @@ const addProduct=async (req,res)=>{
 const update_product = async (req, res) => {
     try {
         const ShopId = req.user.userId;
-        const { productId, name, price } = req.body;
+        const { productId, name, price , availability} = req.body;
         const image = req.file ? `/uploads/${req.file.filename}` : null;
 
         
-        if (!productId || !name || !price || !ShopId) {
+        if (!productId || !name || !price || !ShopId || !availability) {
             return res.status(400).json({success: false, message: "All properties required" });
         }
 
@@ -57,7 +57,7 @@ const update_product = async (req, res) => {
         // Update pandrom
         const updatedProduct = await Product.findOneAndUpdate(
             { _id: productId, ShopId },
-            { name, price, ...(image && { image }) }, 
+            { name, price,availability, ...(image && { image }) }, 
             { new: true } 
         );
 
