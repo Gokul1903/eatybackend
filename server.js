@@ -15,6 +15,7 @@ app.use(express.json())
 const allowedOrigins = [
     "http://localhost:5173",
     "https://eatyapp.netlify.app",
+    "http://10.0.2.2:5173",
     "https://eatypartner.netlify.app",
     "https://eatyadmin.netlify.app",
 ];
