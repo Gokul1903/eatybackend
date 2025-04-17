@@ -11,6 +11,8 @@ const userrout = require('./eatyrouts/useroperation');
 const admin = require('./eatyrouts/adminrout');
 
 const app = express();
+const rateLimit = require('express-rate-limit');
+
 
 // Serve uploaded files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
@@ -38,6 +40,17 @@ app.use(cors({
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
+
+const loginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 5, // limit to 5 requests per IP
+    message: { success: false, message: "Too many login attempts. Try again later." },
+  });
+
+app.use('/auth/signin', loginLimiter);
+app.use('/auth/signup', loginLimiter);
+
+
 
 // Routes
 app.use('/auth', authRouter);
