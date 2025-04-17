@@ -27,12 +27,13 @@ const Admin_signin = async (req, res) => {
     // Set cookie
     res.cookie('admin_token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: true,//process.env.NODE_ENV === 'production'
       sameSite: 'None',
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
+    
 
-    return res.status(200).json({ success: true, message: "Admin signed in successfully" });
+    return res.status(200).json({ success: true, message: "Admin signed in successfully" ,token});
   } catch (error) {
     console.error("Admin signin error:", error);
     return res.status(500).json({ success: false, message: "Server error" });
