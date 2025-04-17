@@ -19,7 +19,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost',
-
+  'https://localhost',
   'http://localhost:5173',
   'https://eatyapp.netlify.app',
   'https://eatypartner.netlify.app',
