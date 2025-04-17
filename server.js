@@ -11,33 +11,37 @@ const admin=require('./eatyrouts/adminrout')
 
 const app=express()
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-app.use(express.json())
-const allowedOrigins = [
-    "http://localhost:5173",
-    "https://eatyapp.netlify.app",
+
+// const allowedOrigins = [
+//     "http://localhost:5173",
+//     "https://eatyapp.netlify.app",
     
-    "https://eatypartner.netlify.app",
-    "https://eatyadmin.netlify.app",
-];
-const corsOptions = {
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like from a mobile app)
-    if (!origin) {
-      return callback(null, true);
-    }
+//     "https://eatypartner.netlify.app",
+//     "https://eatyadmin.netlify.app",
+// ];
+// const corsOptions = {
+//   origin: function (origin, callback) {
+//     // Allow requests with no origin (like from a mobile app)
+//     if (!origin) {
+//       return callback(null, true);
+//     }
 
-    // Allow if origin is in allowedOrigins list
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
+//     // Allow if origin is in allowedOrigins list
+//     if (allowedOrigins.includes(origin)) {
+//       return callback(null, true);
+//     }
 
-    // Block other origins
-    return callback(new Error("Not allowed by CORS"));
-  },
-  credentials: true, // if you're using cookies or sessions
-};
-
-app.use(cors(corsOptions));
+//     // Block other origins
+//     return callback(new Error("Not allowed by CORS"));
+//   },
+//   credentials: true, // if you're using cookies or sessions
+// };
+app.use(cors({
+  origin: ['http://localhost:3000', 'https://localhost'], // Add both just in case
+  credentials: true
+}));
+app.use(express.json())
+// app.use(cors(corsOptions));
 
 
 app.use(cookieParser());    
