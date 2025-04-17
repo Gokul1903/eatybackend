@@ -69,33 +69,48 @@ const verify_otp=async (req,res)=>{
     
 }
 
-const signin = async (req,res)=>{
+const signin = async (req, res) => {
     try {
-        const {email,password}=req.body;
-    const existingUser= await User.findOne({email})
-    if(!existingUser){
-        return res.status(400).json({success: false,message:'invalid Email'})
-    }
-    const ispasscrt= await bcrypt.compare(password,existingUser.password)
-    if(!ispasscrt){
-        return res.status(400).json({success: false,message:'invalid password'})
-    }
-    const token=jwt.sign({userId:existingUser._id}, process.env.JWT_SECRET,{expiresIn:'7d'})
-    res.cookie('token',token,{
-        httpOnly:true,
-        secure: process.env.NODE_ENV,
-        sameSite:'None',
-        maxAge:7 * 24 * 60 * 60 * 1000
-
-    })
-    return res.status(200).json({success: true,message:"Signin Successfully",token});
+      const { email, password } = req.body;
+      const existingUser = await User.findOne({ email });
+  
+      if (!existingUser) {
+        return res.status(400).json({ success: false, message: 'Invalid Email' });
+      }
+  
+      const isPassCorrect = await bcrypt.compare(password, existingUser.password);
+      if (!isPassCorrect) {
+        return res.status(400).json({ success: false, message: 'Invalid Password' });
+      }
+  
+      const token = jwt.sign({ userId: existingUser._id }, process.env.JWT_SECRET, {
+        expiresIn: '7d',
+      });
+  
+      // ✅ Send token as cookie (for browser)
+      res.cookie('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production', // only true in prod
+        sameSite: 'None', // allow cross-site
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
+  
+      // ✅ Also send token in response body (for mobile apps)
+      return res.status(200).json({
+        success: true,
+        message: "Signin Successfully",
+        token,
+        user: {
+          id: existingUser._id,
+          email: existingUser.email,
+          
+        }
+      });
     } catch (error) {
-        return res.status(500).json({success: false,message:"Server error"})
+      return res.status(500).json({ success: false, message: "Server Error" });
     }
-    
-    
-
-}
+  };
+  
 const logout=async(req,res)=>{
     try{
         res.clearCookie('token',{
