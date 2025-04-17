@@ -83,7 +83,7 @@ const signin = async (req,res)=>{
     const token=jwt.sign({userId:existingUser._id}, process.env.JWT_SECRET,{expiresIn:'7d'})
     res.cookie('token',token,{
         httpOnly:true,
-        secure:true ,//process.env.NODE_ENV,
+        secure: process.env.NODE_ENV,
         sameSite:'None',
         maxAge:7 * 24 * 60 * 60 * 1000
 
