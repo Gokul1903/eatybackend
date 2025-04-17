@@ -19,17 +19,25 @@ const allowedOrigins = [
     "https://eatypartner.netlify.app",
     "https://eatyadmin.netlify.app",
 ];
-
-app.use(cors({
+const corsOptions = {
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
+    // Allow requests with no origin (like from a mobile app)
+    if (!origin) {
+      return callback(null, true);
     }
+
+    // Allow if origin is in allowedOrigins list
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    // Block other origins
+    return callback(new Error("Not allowed by CORS"));
   },
-  credentials: true
-}));
+  credentials: true, // if you're using cookies or sessions
+};
+
+app.use(cors(corsOptions));
 
 
 app.use(cookieParser());    
