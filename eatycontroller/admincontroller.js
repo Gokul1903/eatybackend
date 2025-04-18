@@ -33,7 +33,7 @@ const Admin_signin = async (req, res) => {
     });
     
 
-    return res.status(200).json({ success: true, message: "Admin signed in successfully" });
+    return res.status(200).json({ success: true, message: "Admin signed in successfully",token });
   } catch (error) {
     console.error("Admin signin error:", error);
     return res.status(500).json({ success: false, message: "Server error" });
