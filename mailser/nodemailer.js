@@ -40,4 +40,22 @@ const sendOtp = async (email, htmltext) => {
   }
 };
 
-module.exports = sendOtp;
+const sendmail = async (email, htmltext) => {
+  const mailDetails = {
+    from: process.env.SMTP_USER, // ✅ Use your Gmail directly
+    to: email,
+    subject: "Order",
+    html:htmltext,
+  };
+
+  try {
+    await transporter.sendMail(mailDetails);
+    console.log("mail sent successfully to", email);
+    return true;
+  } catch (err) {
+    console.log("Error in sending mail:", err);
+    return false;
+  }
+};
+
+module.exports = {sendOtp,sendmail};

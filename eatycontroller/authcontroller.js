@@ -2,7 +2,7 @@ const User=require('../model/User');
 const Tempuser=require('../model/Tempuser')
 const bcrypt = require('bcryptjs');   
 const jwt = require('jsonwebtoken');
-const sendOtp=require('../mailser/nodemailer');
+const {sendOtp}=require('../mailser/nodemailer');
 const Owner = require('../model/Owners')
 
 const signup= async (req,res)=>{

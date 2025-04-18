@@ -3,6 +3,8 @@ const Order=require('../model/Order')
 const fs = require("fs");
 const path = require("path");
 const User=require('../model/User')
+const {sendmail}=require('../mailser/nodemailer');
+const Owner=require('../model/Owners')
 
 const placeOrder = async (req, res) => {
     try {
@@ -61,6 +63,11 @@ const placeOrder = async (req, res) => {
             });
         }
 
+        const owner = await Owner.findById(ownerId);
+        const email= owner.email
+        const htmltext=`<p>Hurryy...!</p><strong style="color: green; font-size: 25px;">Order...!</strong>`
+        await sendmail(email,htmltext)
+        
 
         return res.status(201).json({success: true, message: "Order placed successfully", order: newOrder });
     } catch (error) {
