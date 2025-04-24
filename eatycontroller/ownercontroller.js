@@ -62,7 +62,19 @@ const updateOrderStatus= async(req,res)=>{
             order.status = "delivered";
             const orderData = order.toObject();
             delete orderData._id;
-            const finish= new FinishedOrder(orderData)
+            const products = orderData.items.map(item => ({
+                name: item.productId.name,
+                quantity: item.quantity
+              }));
+              const finish = new FinishedOrder({
+                userId: orderData.userId,
+                ownerId: orderData.ownerId,
+                address: orderData.Address,
+                products,
+                totalAmount: orderData.totalAmount,
+                paymentMethod: orderData.paymentMethod,
+                status: orderData.status
+              });
             await finish.save()
           } else {
             return res.status(400).json({ success: false, message: "Order already delivered or cancelled" });
