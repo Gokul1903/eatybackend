@@ -51,8 +51,13 @@ const updateOrderStatus= async(req,res)=>{
             return res.status(400).json({success:false,message:"order not found"})
         }
         if (order.status === "pending") {
-            order.status = "foodready";
-          } else if (order.status === "foodready") {
+            order.status = "accepted";
+
+          }
+          else if(order.status === "accepted"){
+             order.status ="foodready";
+          } 
+          else if (order.status === "foodready") {
             order.status = "delivered";
           } else {
             return res.status(400).json({ success: false, message: "Order already delivered or cancelled" });
