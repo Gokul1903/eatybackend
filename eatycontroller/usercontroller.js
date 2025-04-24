@@ -107,7 +107,8 @@ const Orderhistory = async (req, res) => {
 
         const orders = await Order.find({ userId })
             .populate("items.productId", "name price") // name and price of product
-            .populate("userId", "name"); // populate user's name
+            .populate("userId", "name")
+            .populate("ownerId", "phone");// populate user's name
 
             if (!orders.length) {
                 return res.status(200).json({ success: true, orders: [] });

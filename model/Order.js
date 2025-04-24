@@ -44,7 +44,7 @@ const OrderSchema = new Schema({
     },
     status: { 
         type: String, 
-        enum: ['pending','foodready', 'delivered', 'cancelled'], 
+        enum: ['pending','accepted','foodready', 'delivered', 'cancelled'], 
         default: 'pending' 
     }
 }, { timestamps: true });

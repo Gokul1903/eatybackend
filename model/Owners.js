@@ -15,6 +15,11 @@ const OwnerSchema = new Schema({
     password:{
         type:String,
         required:true
-    }
+    },
+    phone:{
+        type:Number,
+        required:true,
+        unique:true
+    },
 },{timestamps:true});
 module.exports=mongoose.model('Owner',OwnerSchema)
