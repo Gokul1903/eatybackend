@@ -47,7 +47,8 @@ const viewsingleorder=async(req,res)=>{
 const updateOrderStatus= async(req,res)=>{
     try {
         const orderId=req.params.id;
-        const order=await Order.findById(orderId)
+        const order = await Order.findById(orderId).populate("items.productId");
+
         if(!order){
             return res.status(400).json({success:false,message:"order not found"})
         }
