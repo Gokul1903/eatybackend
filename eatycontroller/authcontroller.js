@@ -192,16 +192,21 @@ const verift_otp_reset = async (req,res)=>{
 
 const Owner_Signup=async (req,res)=>{
     try {
-        const {name,email,password}=req.body
+        const {name,email,password,phone}=req.body
         const existing= await Owner.findOne({email})
+        const existingPhn= await Owner.findOne({phone})
         if(existing){
+            return res.status(400).json({success: false,message:"User already exist"})
+        }
+        if(existingPhn){
             return res.status(400).json({success: false,message:"User already exist"})
         }
         const hashedpassword= await bcrypt.hash(password,10);
         const newOwner= new Owner({
             name,
             email,
-            password:hashedpassword
+            password:hashedpassword,
+            phone
         })
         await newOwner.save()
         return res.status(200).json({success: true,message:"Signup Successfully for owner"});
