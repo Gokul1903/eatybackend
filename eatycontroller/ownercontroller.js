@@ -3,6 +3,7 @@ const Order=require('../model/Order')
 const fs = require("fs");
 const path = require("path");
 const User=require('../model/User')
+const FinishedOrder=require('../model/FinishedOrder')
 
 const fetchOrder = async (req, res) => {
     try {
@@ -59,6 +60,10 @@ const updateOrderStatus= async(req,res)=>{
           } 
           else if (order.status === "foodready") {
             order.status = "delivered";
+            const orderData = order.toObject();
+            delete orderData._id;
+            const finish= new FinishedOrder(orderData)
+            await finish.save()
           } else {
             return res.status(400).json({ success: false, message: "Order already delivered or cancelled" });
           }
