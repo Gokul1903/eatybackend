@@ -13,6 +13,11 @@ const OrderSchema = new Schema({
         ref: 'Owner', 
         required: true
     },
+    phone:{
+        type:Number,
+        required:true,
+        unique:true
+    },
     Address:{
         type:String,
         required:true

@@ -9,8 +9,8 @@ const Owner=require('../model/Owners')
 const placeOrder = async (req, res) => {
     try {
         const userId=req.user.userId;
-        const { ownerId, items,Address,availability } = req.body;
-        if ( !ownerId || !items || items.length === 0 || !Address || !availability) {
+        const { ownerId, items,Address,availability,phone } = req.body;
+        if ( !ownerId || !items || items.length === 0 || !Address || !availability || !phone) {
             console.log(ownerId,items,Address)
             return res.status(400).json({ message: "User ID and items are required" });
         }
@@ -40,7 +40,8 @@ const placeOrder = async (req, res) => {
             items: updatedItems,
             totalAmount,
             availability,
-            Address
+            Address,
+            phone
         });
 
         await newOrder.save();
