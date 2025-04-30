@@ -16,7 +16,7 @@ const OrderSchema = new Schema({
     phone:{
         type:Number,
         required:true,
-        unique:true
+        
     },
     Address:{
         type:String,
