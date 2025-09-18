@@ -21,11 +21,13 @@ const AuthmiddlewareoWNER = (req, res, next) => {
 
     if (!token) {
         return res.status(401).json({ success: false, message: "Unauthorized" });
+        
     }
 
     try {
         const decode = jwt.verify(token, process.env.OWNER_SECRET);
-        req.user = decode; 
+        req.userId = decode.userId;  
+        req.user = decode;
         
         next();
     } catch (error) {
