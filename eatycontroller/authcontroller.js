@@ -241,4 +241,18 @@ const Owner_signin = async (req,res)=>{
     
 
 }
-module.exports={signup,signin,logout,verify_otp,forget_password,reset_password,verift_otp_reset,Owner_Signup,Owner_signin};
+const getOwnerProfile = async (req, res) => {
+  try {
+    // `AuthmiddlewareoWNER` should already verify token & set req.userId
+    const owner = await Owner.findById(req.userId).select("-password");
+    if (!owner) {
+      return res.status(404).json({ success: false, message: "Owner not found" });
+    }
+
+    return res.json({ success: true, owner });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+module.exports={signup,signin,logout,verify_otp,forget_password,reset_password,verift_otp_reset,Owner_Signup,Owner_signin,getOwnerProfile};
