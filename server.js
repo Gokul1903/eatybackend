@@ -22,6 +22,7 @@ const allowedOrigins = [
   
   'https://localhost',
   'http://localhost:5173',
+  'http://localhost:5174',
   'https://eatyapp.netlify.app',
   'https://eatypartner.netlify.app',
   'https://eatyadmin.netlify.app',
